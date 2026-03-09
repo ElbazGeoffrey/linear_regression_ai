@@ -57,7 +57,6 @@ void free_neuron(struct Neuron *neuron)
 }
 
 
-/*
 double forward_pass(const double x[], struct Neuron *neuron)
 {
   double neuron_sum = neuron->bias;
@@ -67,4 +66,4 @@ double forward_pass(const double x[], struct Neuron *neuron)
   }
 
   return neuron_sum;
-}*/
+}
