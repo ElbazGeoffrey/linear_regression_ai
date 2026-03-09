@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "neuron.h"
 #include "linear_regression.h"
+#include "inputs.h"
 
 #define DATA_SIZE 5
 
@@ -10,14 +11,20 @@ int main(int argc, char *argv[])
   struct Neuron *neuron = create_neuron(1);
 
   //initializing the Dataset
-  struct Dot dataset[] = {
-    {{1}, 2},
-    {{1}, 2},
-    {{1}, 2},
-    {{1}, 2},
-    {{1}, 2}
+  struct Dot dataset[DATA_SIZE] = {
+    (struct Dot){{1}, 2},
+    (struct Dot){{3}, 2},
+    (struct Dot){{5}, 2},
+    (struct Dot){{7}, 2},
+    (struct Dot){{10}, 2}
   };
 
+  double y_pred[DATA_SIZE];
+
+  for (int i = 0; i < DATA_SIZE; i++)
+  {
+    y_pred[i] = forward_pass(dataset[i].x, neuron);
+  }
 
   free_neuron(neuron);
 
@@ -66,4 +73,9 @@ double forward_pass(const double x[], struct Neuron *neuron)
   }
 
   return neuron_sum;
+}
+
+double error(double predicted_y, double y)
+{
+  return predicted_y - y;
 }
