@@ -2,29 +2,48 @@
 #include <stdlib.h>
 #include "neuron.h"
 #include "linear_regression.h"
-#include "inputs.h"
 
-#define DATA_SIZE 5
+#define LEARNING_RATE 0.1
+#define EPOCHS 100
+
 
 int main(int argc, char *argv[])  
 {
-  struct Neuron *neuron = create_neuron(1);
+  struct Neuron *neuron = create_neuron(NEURON_DIM);
 
   //initializing the Dataset
-  struct Dot dataset[DATA_SIZE] = {
-    (struct Dot){{1}, 2},
-    (struct Dot){{3}, 2},
-    (struct Dot){{5}, 2},
-    (struct Dot){{7}, 2},
-    (struct Dot){{10}, 2}
+ /* struct Dot dataset[DATA_SIZE] = {
+    {{1}, 2},
+    {{3}, 2},
+    {{5}, 2},
+    {{7}, 2},
+    {{10}, 2}
   };
 
-  double y_pred[DATA_SIZE];
+  struct Dot dataset[DATA_SIZE] = {
+    {{1}, 4},
+    {{2}, 7},
+    {{3}, 10},
+    {{4}, 13},
+    {{5}, 16}
+  };
+  */
 
-  for (int i = 0; i < DATA_SIZE; i++)
+  //gradient descent updating the weight and bias
+  gradient_descent(neuron, dataset, DATA_SIZE, LEARNING_RATE,  EPOCHS);
+
+
+  // After training
+  printf("Trained weights: ");
+  for(int i = 0; i < NEURON_DIM; i++)
   {
-    y_pred[i] = forward_pass(dataset[i].x, neuron);
+    printf("%f ", neuron->weights[i]);
   }
+
+  printf("\n");
+
+  printf("Trained bias: %f\n", neuron->bias);
+
 
   free_neuron(neuron);
 
@@ -45,7 +64,6 @@ struct Neuron *create_neuron(int nb_inputs)
 {
   struct Neuron *neuron = malloc(sizeof(struct Neuron));
 
-  neuron->nb_inputs = nb_inputs;
   neuron->bias = 0.0;
   neuron->weights = malloc(sizeof(double) * nb_inputs);
 
@@ -67,7 +85,7 @@ void free_neuron(struct Neuron *neuron)
 double forward_pass(const double x[], struct Neuron *neuron)
 {
   double neuron_sum = neuron->bias;
-  for(int i = 0; i < neuron->nb_inputs; i++)
+  for(int i = 0; i < NEURON_DIM; i++)
   {
     neuron_sum += neuron->weights[i] * x[i];
   }
@@ -78,4 +96,22 @@ double forward_pass(const double x[], struct Neuron *neuron)
 double error(double predicted_y, double y)
 {
   return predicted_y - y;
+}
+
+void gradient_descent(struct Neuron *neuron, struct Dot dataset[DATA_SIZE], int n_samples, double lr, int epochs)
+{
+  for(int e = 0; e < epochs; e++)
+  {
+    for(int i = 0; i < n_samples; i++)
+    {
+      double y_pred = forward_pass(dataset[i].x, neuron);
+      double err = error(y_pred, dataset[i].y);
+      
+      for(int j = 0; j < NEURON_DIM; j++)
+        neuron->weights[j] -= lr * err * dataset[i].x[j];
+      
+      neuron->bias -= lr * err;
+      
+    }
+  }
 }

@@ -1,10 +1,10 @@
 #ifndef INPUTS_H
 #define INPUTS_H
 
-#define DATA_SIZE 5
+#define NEURON_DIM 1
 
 struct Dot {
-  double x[DATA_SIZE];
+  double x[NEURON_DIM];
   double y;
 };
 
