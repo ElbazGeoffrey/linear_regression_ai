@@ -1,12 +1,10 @@
-# linear_regression_ai
-
 # Linear Regression AI (C Implementation)
 
 ## Overview
 
 This project implements **linear regression trained with gradient descent** using a simple **neuron model written in C**.
 
-The goal is to demonstrate how a basic machine learning algorithm works **from scratch**, without external libraries.
+The goal is getting familiar with AI concept by making basic machine learning algorithm **from scratch**, without external libraries.
 The implementation treats linear regression as a **single artificial neuron**.
 
 ---
@@ -23,12 +21,6 @@ Where:
 * **w** : weights vector
 * **b** : bias
 * **ŷ** : predicted output
-
-For a neuron with *n* inputs:
-
-ŷ = w₁x₁ + w₂x₂ + ... + wₙxₙ + b
-
-This computation is implemented in the **forward pass**.
 
 ---
 
@@ -159,5 +151,4 @@ linear_regression.h
 inputs.h
 ```
 
-Main compon
 
